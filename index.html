@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="utf-8" />
-  <title>Market Expansion_Wanonniwat</title>
+  <title>Market Expansion : Leads Wanonniwat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -19,54 +19,48 @@
     .dot.red { background: #d00; }
     .dot.blue { background: #2a62ff; }
     .dot.green { background: #2ecc71; }
-     .reach {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    background: linear-gradient(135deg, #ffffff, #f9fbff);
-    padding: 16px 20px;
-    border-radius: 14px;
-    border: 1px solid #dce3f0;
-    box-shadow: 0 4px 16px rgba(0,0,0,.15);
-    font-family: "Segoe UI", sans-serif;
-    font-size: 15px;
-    min-width: 380px;
-      }
-      .reach .title {
-        font-weight: 700;
-        font-size: 16px;
-        margin-bottom: 10px;
-        color: #2c3e50;
-        border-bottom: 2px solid #4a90e2;
-        padding-bottom: 6px;
-      }
-      .reach .row {
-        display: flex;
-        flex-direction: column;
-        margin: 8px 0;
-      }
-      .reach .label {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 4px;
-      }
-      .reach .bar {
-        height: 10px;
-        background: #e0e6f5;
-        border-radius: 5px;
-        overflow: hidden;
-      }
-      .reach .bar span {
-        display: block;
-        height: 100%;
-        background: linear-gradient(90deg, #4a90e2, #50c9ce);
-      }
 
-  
-    .salesbox {
+    .reach {
       position: absolute;
       top: 16px;
-      right: 16px;
+      left: 16px;
+      background: linear-gradient(135deg, #ffffff, #f9fbff);
+      padding: 16px 20px;
+      border-radius: 14px;
+      border: 1px solid #dce3f0;
+      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+      font-family: "Segoe UI", sans-serif;
+      font-size: 15px;
+      min-width: 380px;
+    }
+    .reach .title { font-weight: 700; font-size: 16px; margin-bottom: 10px; color: #2c3e50; border-bottom: 2px solid #4a90e2; padding-bottom: 6px; }
+    .reach .row { display: flex; flex-direction: column; margin: 8px 0; }
+    .reach .label { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .reach .bar { height: 10px; background: #e0e6f5; border-radius: 5px; overflow: hidden; }
+    .reach .bar span { display: block; height: 100%; background: linear-gradient(90deg, #4a90e2, #50c9ce); }
+
+    /* Date Filter */
+    .filterbox { 
+      background: linear-gradient(135deg, #ffffff, #f7fffb); 
+      padding: 14px 16px; 
+      border-radius: 14px; 
+      border: 1px solid #cfe9db; 
+      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+      font-family: "Segoe UI", sans-serif; font-size: 14px; min-width: 320px;
+    }
+    .filterbox .title { font-weight: 700; font-size: 16px; margin-bottom: 10px; color: #1f5135; border-bottom: 2px solid #6fd3a7; padding-bottom: 6px; }
+    .filterbox .row { display: grid; grid-template-columns: auto 1fr; gap: 8px 10px; align-items: center; margin-bottom: 8px; }
+    .filterbox label { white-space: nowrap; }
+    .filterbox input[type="date"] { padding: 6px 8px; border: 1px solid #d3e6dc; border-radius: 8px; }
+    .filterbox .actions { display: flex; gap: 8px; }
+    .filterbox button { 
+      padding: 8px 12px; border-radius: 10px; border: 1px solid #bfe8d3; cursor: pointer; background: #e9fff5;
+    }
+    .filterbox button:hover { filter: brightness(0.98); }
+    .filterbox .stat { margin-top: 8px; font-size: 13px; color: #1f5135; }
+
+    /* Sales summary (under filter) */
+    .salesbox { 
       background: linear-gradient(135deg, #ffffff, #fffaf5);
       padding: 16px 20px;
       border-radius: 14px;
@@ -74,31 +68,28 @@
       box-shadow: 0 4px 16px rgba(0,0,0,.15);
       font-family: "Segoe UI", sans-serif;
       font-size: 15px;
-      min-width: 280px;
+      min-width: 320px;
+      margin-top: 10px; 
     }
-    .salesbox .title {
-      font-weight: 700;
-      font-size: 16px;
-      margin-bottom: 10px;
-      color: #6b3f00;
-      border-bottom: 2px solid #ffb257;
-      padding-bottom: 6px;
+    .salesbox .title { font-weight: 700; font-size: 16px; margin-bottom: 10px; color: #6b3f00; border-bottom: 2px solid #ffb257; padding-bottom: 6px; }
+    .salesbox .row { display: flex; justify-content: space-between; align-items: center; background: #fff4e5; margin: 6px 0; padding: 8px 12px; border-radius: 10px; }
+    .salesbox .value { font-weight: 700; font-size: 18px; color: #7a4d00; }
+
+    /* Close Won Summary (fixed) */
+    .wonbox{
+      background: linear-gradient(135deg,#ffffff,#f3f7ff);
+      padding:16px 20px;
+      border-radius:14px;
+      border:1px solid #dbe4ff;
+      box-shadow:0 4px 16px rgba(0,0,0,.12);
+      font-family:"Segoe UI",sans-serif;
+      font-size:15px;
+      min-width:320px;
+      margin-top:10px;
     }
-    .salesbox .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #fff4e5;
-      margin: 6px 0;
-      padding: 8px 12px;
-      border-radius: 10px;
-    }
-    .salesbox .value {
-      font-weight: 700;
-      font-size: 18px;
-      color: #7a4d00;
-    }
-    
+    .wonbox .title{ font-weight:700; font-size:16px; margin-bottom:10px; color:#1e3a8a; border-bottom:2px solid #93c5fd; padding-bottom:6px; }
+    .wonbox .row{ display:flex; justify-content:space-between; align-items:center; background:#eef4ff; margin:6px 0; padding:8px 12px; border-radius:10px; }
+    .wonbox .value{ font-weight:700; font-size:18px; color:#1e3a8a; }
   </style>
 </head>
 <body>
@@ -106,6 +97,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
+    // ===== Branch (fixed) =====
     const branch = {
       name: "สาขา วานรนิวาส",
       lat: 17.62932338805625,
@@ -113,143 +105,245 @@
       radius_m: 80000
     };
 
-    const customersBlue = [
-      { name: `ปั๊มพิชัยบริการ`, lat: 17.86715479, lng: 103.59521900, popup: `<b>ปั๊มพิชัยบริการ</b><br>Supplier ปัจจุบัน: ไทยรุ่งเรืองบึงกาฬ<br>DS (ลิตร): 6000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 200<br>Sender: พี่จุ่น<br>Note: ถัง 200 ลิตร 2 ถัง` },
-      { name: `ปั๊มใจดี บ่อแก้วบริการ`, lat: 17.86642637, lng: 103.59515145, popup: `<b>ปั๊มใจดี บ่อแก้วบริการ</b><br>Supplier ปัจจุบัน: ศรีพลัง<br>DS (ลิตร): 18000<br>G91 (ลิตร): 4000<br>G95 (ลิตร): 4000<br>Sender: พี่ต้น<br>Note: nan` },
-      { name: `ปั๊มนันมินิมาร์ท`, lat: 17.92505610, lng: 103.66866827, popup: `<b>ปั๊มนันมินิมาร์ท</b><br>Supplier ปัจจุบัน: ไทยรุ่งเรือง <br>DS (ลิตร): 3000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่ต้น<br>Note: ซื้อเงินสด / ราคาเราสู้ได้ DS ซื้อลิตรละ 32.00` },
-      { name: `ปั้มสมพรการค้า รับมิเตอร์`, lat: 17.95767479, lng: 103.68048112, popup: `<b>ปั้มสมพรการค้า รับมิเตอร์</b><br>Supplier ปัจจุบัน: ไทยรุ่งเรือง<br>DS (ลิตร): 500<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่โก้<br>Note: nan` },
-      { name: `ปั๊มชุมชนสาธิตการตลาด บ้านพอกใหญ่`, lat: 17.85880395, lng: 103.71931081, popup: `<b>ปั๊มชุมชนสาธิตการตลาด บ้านพอกใหญ่</b><br>Supplier ปัจจุบัน: nan<br>DS (ลิตร): 4000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 2000<br>Sender: พี่จุ่น<br>Note: nan` },
-      { name: `ปั้มไพศาลบริการ อ.เมืองบึงกาฬ`, lat: 18.27510284, lng: 103.85332001, popup: `<b>ปั้มไพศาลบริการ อ.เมืองบึงกาฬ</b><br>Supplier ปัจจุบัน: หนองคายไทยรุ่งเรือง<br>DS (ลิตร): 9000<br>G91 (ลิตร): 5000<br>G95 (ลิตร): 5000<br>Sender: พี่โก้<br>Note: nan` },
-      { name: `ปั้มสิริวัฒน์`, lat: 18.17910238, lng: 103.89704795, popup: `<b>ปั้มสิริวัฒน์</b><br>Supplier ปัจจุบัน: ช.วิบูลย์(พรเจริญ)<br>DS (ลิตร): 3000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่โก้<br>Note: nan` },
-      { name: `ปั้มทรัพย์มั่นคง99`, lat: 18.10544285, lng: 103.84663707, popup: `<b>ปั้มทรัพย์มั่นคง99</b><br>Supplier ปัจจุบัน: หนองคายไทยรุ่งเรือง<br>DS (ลิตร): 0<br>G91 (ลิตร): 0<br>G95 (ลิตร): 0<br>Sender: พี่โก้<br>Note: รับน้ำมันกับหนองคายรุ่งเรืองทั้ง 3 สาขา` },
-      { name: `ปั๊มป่านตะวัน`, lat: 17.76591902, lng: 103.81766172, popup: `<b>ปั๊มป่านตะวัน</b><br>Supplier ปัจจุบัน: รีพลัง <br>DS (ลิตร): 4000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่จุ่น<br>Note: nan` },
-      { name: `ปั้มบ้านนาแสง`, lat: 18.11623753, lng: 103.86627257, popup: `<b>ปั้มบ้านนาแสง</b><br>Supplier ปัจจุบัน: วิบูลย์(พรเจริญ)<br>DS (ลิตร): 0<br>G91 (ลิตร): 0<br>G95 (ลิตร): 0<br>Sender: พี่โก้<br>Note: nan` },
-      { name: `ปั๊มวิเชียร`, lat: 17.76284390, lng: 103.83351872, popup: `<b>ปั๊มวิเชียร</b><br>Supplier ปัจจุบัน: ช.พิบูล <br>DS (ลิตร): 1000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่จุ่น<br>Note: nan` },
-      { name: `ปั้มแม่เต็มจิต`, lat: 18.08340236, lng: 103.95153637, popup: `<b>ปั้มแม่เต็มจิต</b><br>Supplier ปัจจุบัน: ช.วิบูลย์(พรเจริญ)<br>DS (ลิตร): 5000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่โก้<br>Note: รับน้ำมันกับหนองคายรุ่งเรืองด้วย` },
-      { name: `ปั๊มหว้าใหญ่`, lat: 17.62868048, lng: 103.95553545, popup: `<b>ปั๊มหว้าใหญ่</b><br>Supplier ปัจจุบัน: นาทีพาณิช <br>DS (ลิตร): 500<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่จุ่น<br>Note: nan` },
-      { name: `ปั๊มขายดีบริการ`, lat: 17.55574734, lng: 104.02012827, popup: `<b>ปั๊มขายดีบริการ</b><br>Supplier ปัจจุบัน: ปตท.<br>DS (ลิตร): 4000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 450<br>Sender: พี่จุ่น<br>Note: nan` },
-      { name: `ปั้มบุญเจริญ บึงโขงหลง`, lat: 17.99017526, lng: 104.08603604, popup: `<b>ปั้มบุญเจริญ บึงโขงหลง</b><br>Supplier ปัจจุบัน: นาทีวานร<br>DS (ลิตร): 0<br>G91 (ลิตร): 0<br>G95 (ลิตร): 0<br>Sender: พี่โก้<br>Note: nan` },
-      { name: `ปั้มจงราชาทรัพย์`, lat: 17.39012224, lng: 104.38102150, popup: `<b>ปั้มจงราชาทรัพย์</b><br>Supplier ปัจจุบัน: ลิตรนภา<br>DS (ลิตร): 10000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 5000<br>Sender: พี่โก้<br>Note: ปั้มใหม่เปิดยังไม่ถึงปี สู้ที่ราคาและเวลาเสริฟ` },
-      { name: `ปั๊ม ซี เค ออยล์ 1992`, lat: 17.22428695, lng: 104.10681172, popup: `<b>ปั๊ม ซี เค ออยล์ 1992</b><br>Supplier ปัจจุบัน: คอสโม่ <br>DS (ลิตร): 10000<br>G91 (ลิตร): 6000<br>G95 (ลิตร): 10000<br>Sender: พี่จุ่น<br>Note: nan` },
-      { name: `ปั้มพ่อพินิจ`, lat: 17.38631393, lng: 103.78297745, popup: `<b>ปั้มพ่อพินิจ</b><br>Supplier ปัจจุบัน: PTประมวลบริการ<br>DS (ลิตร): 10000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 5000<br>Sender: พี่โก้<br>Note: nan` },
-      { name: `ปั๊มอี๊ดบริการ พรรณานิคม`, lat: 17.36389100, lng: 103.78976562, popup: `<b>ปั๊มอี๊ดบริการ พรรณานิคม</b><br>Supplier ปัจจุบัน: PTประมวลบริการสว่างแดนดิน<br>DS (ลิตร): 1000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่โก้<br>Note: nan` },
-      { name: `ปั๊มอนันต์`, lat: 17.26656966, lng: 103.97206018, popup: `<b>ปั๊มอนันต์</b><br>Supplier ปัจจุบัน: ปตท ดงมะไฟ <br>DS (ลิตร): 1400<br>G91 (ลิตร): 500<br>G95 (ลิตร): 0<br>Sender: พี่จุ่น<br>Note: nan` },
-      { name: `ปั้มTD ธนสินดี วาริชภูมิ`, lat: 17.24446787, lng: 103.65504311, popup: `<b>ปั้มTD ธนสินดี วาริชภูมิ</b><br>Supplier ปัจจุบัน: สุขสันต์<br>DS (ลิตร): 5000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่โก้<br>Note: สู้ที่ราคา ไม่ยึดติดครับ` },
-      { name: `ปั้มใจดีออยล์`, lat: 17.26672434, lng: 103.63399957, popup: `<b>ปั้มใจดีออยล์</b><br>Supplier ปัจจุบัน: nan<br>DS (ลิตร): 2000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 500<br>Sender: พี่โก้<br>Note: กรอกปั้มใหญ่ วิ่งขายสายลูกค้าประจำ ` },
-      { name: `ปั้มพ่อชา`, lat: 17.27137509, lng: 103.63325604, popup: `<b>ปั้มพ่อชา</b><br>Supplier ปัจจุบัน: nan<br>DS (ลิตร): 0<br>G91 (ลิตร): 0<br>G95 (ลิตร): 0<br>Sender: พี่โก้<br>Note: nan` },
-      { name: `ปั้มธนัชโชติ`, lat: 17.36068157, lng: 103.83637200, popup: `<b>ปั้มธนัชโชติ</b><br>Supplier ปัจจุบัน: nan<br>DS (ลิตร): 0<br>G91 (ลิตร): 0<br>G95 (ลิตร): 0<br>Sender: พี่โก้<br>Note: nan` }
+    // ===== Market Size (กำหนดครั้งเดียว) =====
+    const MARKET_SIZE = {
+      "สกลนคร": 102,
+      "บึงกาฬ": 40
+    };
+
+    // ===== Data =====
+    const greenData = [
+      {"name":"ปั๊มอุทัยบริการ","date":"2025-07-16","DS":9000,"G91":2500,"G95":2500,"supplier":"PT,ไทยรุ่งเรือง","lat":17.765329676058276,"lng":103.81967818209542,"amphoe":"คำตากล้า","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
+      {"name":"ปั้มหนองคายไทยรุ่งเรือง (หจก.หนองคายไทยรุ่งเรือง)","date":"2025-07-16","DS":0,"G91":0,"G95":0,"supplier":"ปั้มหนองคายไทยรุ่งเรือง","lat":18.020289696607946,"lng":103.70718204106291,"amphoe":"พรเจริญ","province":"บึงกาฬ","resource":"มีเทลเลอร์ 3 หาง 1 หัวลาก / 10 ล้อ 3 / มิเตอร์ 1","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปั้มเทพปราณี (หจก.เทพปราณี 1969)","date":"2025-07-16","DS":8000,"G91":0,"G95":4000,"supplier":"สุขสันต์","lat":17.943663515847685,"lng":104.0312431532645,"amphoe":"บึงโขงหลง","province":"บึงกาฬ","resource":"รับกับเทลเลอร์","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปตท.ดงมะไฟ (หจก.เทวินปิโตรเลียม)","date":"2025-07-17","DS":0,"G91":0,"G95":0,"supplier":"ปตท ดงมะไฟ","lat":17.277844877801485,"lng":103.9918417244141,"amphoe":"เมืองสกลนคร","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"}
     ];
-    const customersGreen = [
-      { name: `ปั๊มอุทัยบริการ`, lat: 17.76532968, lng: 103.81967818, popup: `<b>ปั๊มอุทัยบริการ</b><br>Supplier ปัจจุบัน: PT,ไทยรุ่งเรือง<br>DS (ลิตร): 9000<br>G91 (ลิตร): 2500<br>G95 (ลิตร): 2500<br>Sender: พี่จุ่น` },
-      { name: `ปั้มหนองคายไทยรุ่งเรือง (หจก.หนองคายไทยรุ่งเรือง)`, lat: 18.02028970, lng: 103.70718204, popup: `<b>ปั้มหนองคายไทยรุ่งเรือง (หจก.หนองคายไทยรุ่งเรือง)</b><br>Supplier ปัจจุบัน: ปั้มหนองคายไทยรุ่งเรือง<br>DS (ลิตร): 0<br>G91 (ลิตร): 0<br>G95 (ลิตร): 0<br>Sender: พี่โก้<br>Note: มีเทลเลอร์ 3 หาง 1 หัวลาก / 10 ล้อ 3 / มิเตอร์ 1` },
-      { name: `ปั้มเทพปราณี (หจก.เทพปราณี 1969)`, lat: 17.94366352, lng: 104.03124315, popup: `<b>ปั้มเทพปราณี (หจก.เทพปราณี 1969)</b><br>Supplier ปัจจุบัน: สุขสันต์<br>DS (ลิตร): 8000<br>G91 (ลิตร): 0<br>G95 (ลิตร): 4000<br>Sender: พี่โก้<br>Note: รับกับเทลเลอร์` },
-      { name: `ปตท.ดงมะไฟ (หจก.เทวินปิโตรเลียม)`, lat: 17.27784488, lng: 103.99184172, popup: `<b>ปตท.ดงมะไฟ (หจก.เทวินปิโตรเลียม)</b><br>Supplier ปัจจุบัน: ปตท ดงมะไฟ<br>DS (ลิตร): 0<br>G91 (ลิตร): 0<br>G95 (ลิตร): 0<br>Sender: พี่จุ่น` }
+    const blueData = [
+      {"name":"ปั๊มพิชัยบริการ","date":"2025-07-15","DS":6000,"G91":0,"G95":200,"supplier":"ไทยรุ่งเรืองบึงกาฬ","lat":17.86715478819837,"lng":103.59521899559262,"amphoe":"บ้านม่วง","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"ถัง 200 ลิตร 2 ถัง","BU":"ST"},
+      {"name":"ปั๊มใจดี บ่อแก้วบริการ","date":"2025-07-15","DS":18000,"G91":4000,"G95":4000,"supplier":"ศรีพลัง","lat":17.866426366070954,"lng":103.59515145326274,"amphoe":"บ้านม่วง","province":"สกลนคร","resource":"เทลเลอร์ส่ง","sender":"พี่ต้น","note":"","BU":"ST"},
+      {"name":"ปั๊มนันมินิมาร์ท","date":"2025-07-15","DS":3000,"G91":0,"G95":500,"supplier":"ไทยรุ่งเรือง","lat":17.925056103979696,"lng":103.66866826675891,"amphoe":"บ้านม่วง","province":"สกลนคร","resource":"","sender":"พี่ต้น","note":"ซื้อเงินสด / ราคาเราสู้ได้ DS ซื้อลิตรละ 32.00","BU":"ST"},
+      {"name":"ปั้มสมพรการค้า รับมิเตอร์","date":"2025-07-15","DS":500,"G91":0,"G95":500,"supplier":"ไทยรุ่งเรือง","lat":17.957674794286323,"lng":103.68048112442985,"amphoe":"พรเจริญ","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปั๊มชุมชนสาธิตการตลาด บ้านพอกใหญ่","date":"2025-07-15","DS":4000,"G91":0,"G95":2000,"supplier":"","lat":17.858803949327505,"lng":103.71931080908715,"amphoe":"คำตากล้า","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
+      {"name":"ปั้มไพศาลบริการ อ.เมืองบึงกาฬ","date":"2025-07-16","DS":9000,"G91":5000,"G95":5000,"supplier":"หนองคายไทยรุ่งเรือง","lat":18.275102836751245,"lng":103.8533200109426,"amphoe":"เมืองบึงกาฬ","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปั้มสิริวัฒน์","date":"2025-07-16","DS":3000,"G91":0,"G95":500,"supplier":"ช.วิบูลย์(พรเจริญ)","lat":18.179102382652673,"lng":103.89704795327019,"amphoe":"เซกา","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปั้มทรัพย์มั่นคง99","date":"2025-07-16","DS":0,"G91":0,"G95":0,"supplier":"หนองคายไทยรุ่งเรือง","lat":18.105442849515683,"lng":103.84663706676317,"amphoe":"ศรีวิไล","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"รับน้ำมันกับหนองคายรุ่งเรืองทั้ง 3 สาขา","BU":"KN"},
+      {"name":"ปั๊มป่านตะวัน","date":"2025-07-16","DS":4000,"G91":0,"G95":500,"supplier":"รีพลัง","lat":17.765919023891154,"lng":103.81766172442532,"amphoe":"คำตากล้า","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
+      {"name":"ปั้มบ้านนาแสง","date":"2025-07-16","DS":0,"G91":0,"G95":0,"supplier":"วิบูลย์(พรเจริญ)","lat":18.116237525670297,"lng":103.86627256676341,"amphoe":"ศรีวิไล","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปั๊มวิเชียร","date":"2025-07-16","DS":1000,"G91":0,"G95":500,"supplier":"ช.พิบูล","lat":17.762843895849546,"lng":103.83351872442522,"amphoe":"คำตากล้า","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
+      {"name":"ปั้มแม่เต็มจิต","date":"2025-07-16","DS":5000,"G91":0,"G95":500,"supplier":"ช.วิบูลย์(พรเจริญ)","lat":18.08340236089418,"lng":103.95153636676265,"amphoe":"เซกา","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"รับน้ำมันกับหนองคายรุ่งเรืองด้วย","BU":"KN"},
+      {"name":"ปั๊มหว้าใหญ่","date":"2025-07-16","DS":500,"G91":0,"G95":500,"supplier":"นาทีพาณิช","lat":17.628680483437247,"lng":103.95553545325721,"amphoe":"อากาศอำนวย","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
+      {"name":"ปั๊มขายดีบริการ","date":"2025-07-16","DS":4000,"G91":0,"G95":450,"supplier":"ปตท.","lat":17.555747336910922,"lng":104.0201282667504,"amphoe":"อากาศอำนวย","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
+      {"name":"ปั้มบุญเจริญ บึงโขงหลง","date":"2025-07-16","DS":0,"G91":0,"G95":0,"supplier":"นาทีวานร","lat":17.990175260456073,"lng":104.08603603792535,"amphoe":"บึงโขงหลง","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปั้มจงราชาทรัพย์","date":"2025-07-17","DS":10000,"G91":0,"G95":5000,"supplier":"ลิตรนภา","lat":17.390122237074333,"lng":104.38102149558154,"amphoe":"กุสุมาลย์","province":"สกลนคร","resource":"","sender":"พี่โก้","note":"ปั้มใหม่เปิดยังไม่ถึงปี สู้ที่ราคาและเวลาเสริฟ","BU":"KN"},
+      {"name":"ปั๊ม ซี เค ออยล์ 1992","date":"2025-07-17","DS":10000,"G91":6000,"G95":10000,"supplier":"คอสโม่","lat":17.224286946572104,"lng":104.1068117244128,"amphoe":"เมืองสกลนคร","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
+      {"name":"ปั้มพ่อพินิจ","date":"2025-07-17","DS":10000,"G91":0,"G95":5000,"supplier":"PTประมวลบริการ","lat":17.38631393402591,"lng":103.78297745140618,"amphoe":"พังโคน","province":"สกลนคร","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปั๊มอี๊ดบริการ พรรณานิคม","date":"2025-07-17","DS":1000,"G91":0,"G95":500,"supplier":"PTประมวลบริการสว่างแดนดิน","lat":17.363891001952435,"lng":103.78976562441613,"amphoe":"พรรณานิคม","province":"สกลนคร","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปั๊มอนันต์","date":"2025-07-17","DS":1400,"G91":500,"G95":0,"supplier":"ปตท ดงมะไฟ","lat":17.266569663639924,"lng":103.97206018208398,"amphoe":"พรรณานิคม","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
+      {"name":"ปั้มTD ธนสินดี วาริชภูมิ","date":"2025-07-17","DS":5000,"G91":0,"G95":500,"supplier":"สุขสันต์","lat":17.24446786834928,"lng":103.65504311091858,"amphoe":"วาริชภูมิ","province":"สกลนคร","resource":"","sender":"พี่โก้","note":"สู้ที่ราคา ไม่ยึดติดครับ","BU":"KN"},
+      {"name":"ปั้มใจดีออยล์","date":"2025-07-17","DS":2000,"G91":0,"G95":500,"supplier":"","lat":17.26672434484204,"lng":103.63399956674371,"amphoe":"วาริชภูมิ","province":"สกลนคร","resource":"มีรถมิเตอร์6 ล้อ1 คัน","sender":"พี่โก้","note":"กรอกปั้มใหญ่ วิ่งขายสายลูกค้าประจำ","BU":"KN"},
+      {"name":"ปั้มพ่อชา","date":"2025-07-17","DS":0,"G91":0,"G95":0,"supplier":"","lat":17.271375085001825,"lng":103.63325603790868,"amphoe":"วาริชภูมิ","province":"สกลนคร","resource":"มีรถมิเตอร์6 ล้อ1 คัน","sender":"พี่โก้","note":"","BU":"KN"},
+      {"name":"ปั้มธนัชโชติ","date":"2025-07-17","DS":0,"G91":0,"G95":0,"supplier":"","lat":17.36068156508588,"lng":103.8363719955808,"amphoe":"พรรณานิคม","province":"สกลนคร","resource":"มีรถมิเตอร์6 ล้อ1 คัน","sender":"พี่โก้","note":"","BU":"KN"}
     ];
 
-    const redIcon = L.icon({
-      iconUrl: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
-      iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -28]
-    });
-    const blueIcon = L.icon({
-      iconUrl: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-      iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -28]
-    });
-    const greenIcon = L.icon({
-      iconUrl: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
-      iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -28]
-    });
+    // ===== Icons =====
+    const redIcon = L.icon({ iconUrl: "https://maps.google.com/mapfiles/ms/icons/red-dot.png", iconSize: [32,32], iconAnchor: [16,32], popupAnchor: [0,-28] });
+    const blueIcon = L.icon({ iconUrl: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png", iconSize: [32,32], iconAnchor: [16,32], popupAnchor: [0,-28] });
+    const greenIcon = L.icon({ iconUrl: "https://maps.google.com/mapfiles/ms/icons/green-dot.png", iconSize: [32,32], iconAnchor: [16,32], popupAnchor: [0,-28] });
 
+    // ===== Map =====
     const map = L.map("map", { center: [branch.lat, branch.lng], zoom: 8 });
-    
-    // Closed Won / Sales summary (right side)
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "&copy; OpenStreetMap contributors" }).addTo(map);
+
+    // Branch marker & radius
+    L.marker([branch.lat, branch.lng], { icon: redIcon })
+      .addTo(map)
+      .bindPopup(`<b>${branch.name}</b><br><a href="https://www.google.com/maps?q=${branch.lat},${branch.lng}" target="_blank" rel="noopener">เปิดใน Google Maps</a>`)
+      .openPopup();
+    const circle = L.circle([branch.lat, branch.lng], { radius: branch.radius_m, color: "#d00", weight: 2, fillColor: "#d00", fillOpacity: 0.08 }).addTo(map);
+
+    // Layers
+    const layerBlue = L.layerGroup().addTo(map);
+    const layerGreen = L.layerGroup().addTo(map);
+
+    // Popup
+    function popupHTML(p) {
+      const liters = (v) => (v == null ? "0" : v);
+      const dateDisp = p.date || "-";
+      const resourceLine = p.resource ? `⚙️ <b>Resource:</b> ${p.resource}<br>` : "";
+      return `
+        <b>${p.name}</b><br>
+        📅 <b>Date:</b> ${dateDisp}<br>
+        🏷️ <b>Supplier:</b> ${p.supplier ?? "-"}<br>
+        ⛽ <b>DS/G91/G95:</b> ${liters(p.DS)}/${liters(p.G91)}/${liters(p.G95)} ลิตร<br>
+        📍 <b>${p.amphoe ?? ""}${p.province ? ", "+p.province : ""}</b><br>
+        ${resourceLine}
+        👤 <b>Sender:</b> ${p.sender ?? "-"}<br>
+        📝 <b>Note:</b> ${p.note || "-"}<br>
+        <a href="https://www.google.com/maps?q=${p.lat},${p.lng}" target="_blank" rel="noopener">เปิดใน Google Maps</a>`;
+    }
+    function addPoints(data, icon, layer) {
+      data.forEach(p => {
+        L.marker([p.lat, p.lng], { icon }).addTo(layer).bindPopup(popupHTML(p));
+      });
+    }
+
+    // Reach box
+    const reachCtrl = L.control({ position: "topleft" });
+    reachCtrl.onAdd = () => {
+      const div = L.DomUtil.create("div", "reach");
+      div.innerHTML = `
+        <div class="title">🎯 Target Reach (Leads): Actual / Market Size</div>
+        <div id="reachRows"></div>`;
+      L.DomEvent.disableClickPropagation(div);
+      return div;
+    };
+    reachCtrl.addTo(map);
+
+    function renderReach(fBlue, fGreen) {
+      const all = [...fBlue, ...fGreen];
+      const byProvince = {};
+      all.forEach(p => {
+        const prov = p.province || "ไม่ทราบจังหวัด";
+        byProvince[prov] = (byProvince[prov] || 0) + 1;
+      });
+      const wrap = document.getElementById("reachRows");
+      let html = "";
+      Object.keys(MARKET_SIZE).forEach(prov => {
+        const actual = byProvince[prov] || 0;
+        const market = MARKET_SIZE[prov];
+        const pct = market ? (actual / market) * 100 : 0;
+        html += `<div class="row"><div class="label"><span>${prov}</span><span>${actual}/${market} (${pct.toFixed(2)}%)</span></div><div class="bar"><span style="width:${Math.min(pct,100)}%"></span></div></div>`;
+      });
+      Object.keys(byProvince).forEach(prov => {
+        if (!(prov in MARKET_SIZE)) {
+          const actual = byProvince[prov];
+          html += `<div class="row"><div class="label"><span>${prov}</span><span>${actual}/-</span></div><div class="bar"><span style="width:0%"></span></div></div>`;
+        }
+      });
+      wrap.innerHTML = html || `<div style="opacity:.8">ไม่มีข้อมูลในช่วงวันที่ที่เลือก</div>`;
+    }
+
+    function renderAll(filteredBlue = blueData, filteredGreen = greenData) {
+      layerBlue.clearLayers();
+      layerGreen.clearLayers();
+      addPoints(filteredBlue, blueIcon, layerBlue);
+      addPoints(filteredGreen, greenIcon, layerGreen);
+
+      const b = L.latLngBounds();
+      b.extend(circle.getBounds());
+      layerBlue.eachLayer(l => b.extend(l.getLatLng()));
+      layerGreen.eachLayer(l => b.extend(l.getLatLng()));
+      if (b.isValid()) map.fitBounds(b.pad(0.1));
+
+      updateCounts(filteredBlue, filteredGreen);
+      renderReach(filteredBlue, filteredGreen);
+    }
+
+    // Filter control
+    const filterCtrl = L.control({ position: "topright" });
+    filterCtrl.onAdd = () => {
+      const div = L.DomUtil.create("div", "filterbox");
+      div.innerHTML = `
+        <div class="title">📆 Filter by Date</div>
+        <div class="row">
+          <label for="startDate">เริ่ม</label>
+          <input id="startDate" type="date" />
+        </div>
+        <div class="row">
+          <label for="endDate">สิ้นสุด</label>
+          <input id="endDate" type="date" />
+        </div>
+        <div class="actions">
+          <button id="applyBtn">Apply</button>
+          <button id="clearBtn">Clear</button>
+        </div>
+        <div class="stat" id="filterStat">แสดงผลทั้งหมด</div>`;
+      L.DomEvent.disableClickPropagation(div);
+      return div;
+    };
+    filterCtrl.addTo(map);
+
+    // Sales summary (dynamic)
     const salesCtrl = L.control({ position: "topright" });
     salesCtrl.onAdd = () => {
       const div = L.DomUtil.create("div", "salesbox");
       div.innerHTML = `
-        <div class="title">💼 Closed Won Summary</div>
-        <div class="row"><span>จำนวนลูกค้า (ราย)</span><span class="value">0</span></div>
-        <div class="row"><span>ยอดขาย (ลิตร)</span><span class="value">0</span></div>
-      `;
+        <div class="title">💼 สรุปจากการลงพื้นที่จริง</div>
+        <div class="row"><span>Actual Leads (ราย)</span><span class="value" id="cntCustomers">0</span></div>
+        <div class="row"><span>Actual Market Size (ลิตร)</span><span class="value" id="sumLiters">0</span></div>`;
+      L.DomEvent.disableClickPropagation(div);
       return div;
     };
     salesCtrl.addTo(map);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap contributors"
-    }).addTo(map);
 
-    // Target Reach box
-  const reachCtrl = L.control({ position: "topleft" });
-  reachCtrl.onAdd = () => {
-  const div = L.DomUtil.create("div", "reach");
-  div.innerHTML = `
-    <div class="title">🎯 Target Reach (Leads): Actual / Market Size</div>
-    
-    <div class="row">
-      <div class="label"><span>สกลนคร</span><span>19/102 (18.63%)</span></div>
-      <div class="bar"><span style="width:18.63%"></span></div>
-    </div>
-    
-    <div class="row">
-      <div class="label"><span>บึงกาฬ</span><span>9/40 (22.50%)</span></div>
-      <div class="bar"><span style="width:22.5%"></span></div>
-    </div>
-  `;
-  return div;
-};
-reachCtrl.addTo(map);
+    function updateCounts(fBlue, fGreen) {
+      const all = [...fBlue, ...fGreen];
+      const customers = all.length;
+      const liters = all.reduce((acc, p) => acc + (p.DS||0) + (p.G91||0) + (p.G95||0), 0);
+      const fmt = (n) => n.toLocaleString();
+      document.getElementById('cntCustomers').textContent = fmt(customers);
+      document.getElementById('sumLiters').textContent = fmt(liters);
+    }
 
+    // NEW: Close Won Summary (fixed numbers)
+    const FIXED_WON_CUSTOMERS = 0;
+    const FIXED_WON_LITERS = 0;
+    const wonCtrl = L.control({ position: "topright" });
+    wonCtrl.onAdd = () => {
+      const div = L.DomUtil.create("div", "wonbox");
+      div.innerHTML = `
+        <div class="title">🏁 Close Won Summary</div>
+        <div class="row"><span>จำนวนลูกค้าที่ปิดการขาย (ราย)</span><span class="value">${FIXED_WON_CUSTOMERS}</span></div>
+        <div class="row"><span>ยอดขาย (ลิตร)</span><span class="value">${FIXED_WON_LITERS.toLocaleString()}</span></div>`;
+      L.DomEvent.disableClickPropagation(div);
+      return div;
+    };
+    wonCtrl.addTo(map);
 
-    L.marker([branch.lat, branch.lng], { icon: redIcon })
-      .addTo(map)
-      .bindPopup(
-        `<b>${branch.name}</b><br>` +
-        `<a href="https://www.google.com/maps?q=${branch.lat},${branch.lng}" target="_blank" rel="noopener">เปิดใน Google Maps</a>`
-      )
-      .openPopup();
+    // Date filtering
+    function parseYMD(s) { if (!s) return null; const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+    function within(dateStr, startStr, endStr) {
+      if (!startStr && !endStr) return true;
+      const d = parseYMD(dateStr); if (!d) return false;
+      const s = startStr ? parseYMD(startStr) : null;
+      const e = endStr ? parseYMD(endStr) : null;
+      if (s && d < s) return false; if (e && d > e) return false; return true;
+    }
+    function applyFilter() {
+      const start = document.getElementById('startDate').value;
+      const end = document.getElementById('endDate').value;
+      const fGreen = greenData.filter(p => within(p.date, start, end));
+      const fBlue  = blueData.filter(p => within(p.date, start, end));
+      renderAll(fBlue, fGreen);
+      const stat = document.getElementById('filterStat');
+      if (!start && !end) stat.textContent = 'แสดงผลทั้งหมด';
+      else if (start && end) stat.textContent = `ช่วงวันที่ ${start} ถึง ${end}`;
+      else if (start) stat.textContent = `ตั้งแต่วันที่ ${start}`;
+      else stat.textContent = `ถึงวันที่ ${end}`;
+    }
+    function clearFilter() { document.getElementById('startDate').value=''; document.getElementById('endDate').value=''; applyFilter(); }
+    function wireFilterEvents() {
+      document.getElementById('applyBtn').addEventListener('click', applyFilter);
+      document.getElementById('clearBtn').addEventListener('click', clearFilter);
+      ['startDate','endDate'].forEach(id => { document.getElementById(id).addEventListener('change', applyFilter); });
+    }
 
-    const circle = L.circle([branch.lat, branch.lng], {
-      radius: branch.radius_m, color: "#d00", weight: 2, fillColor: "#d00", fillOpacity: 0.08
-    }).addTo(map);
+    // Initial render
+    renderAll();
+    wireFilterEvents();
 
-    const layerBlue = L.layerGroup().addTo(map);
-    const layerGreen = L.layerGroup().addTo(map);
-
-    customersBlue.forEach(c => {
-      L.marker([c.lat, c.lng], { icon: blueIcon })
-        .addTo(layerBlue)
-        .bindPopup(
-          (c.popup || `<b>${c.name}</b>`) +
-          `<br><a href="https://www.google.com/maps?q=${c.lat},${c.lng}" target="_blank" rel="noopener">เปิดใน Google Maps</a>`
-        );
-    });
-    customersGreen.forEach(c => {
-      L.marker([c.lat, c.lng], { icon: greenIcon })
-        .addTo(layerGreen)
-        .bindPopup(
-          (c.popup || `<b>${c.name}</b>`) +
-          `<br><a href="https://www.google.com/maps?q=${c.lat},${c.lng}" target="_blank" rel="noopener">เปิดใน Google Maps</a>`
-        );
-    });
-
-    const bounds = L.latLngBounds([[branch.lat, branch.lng]]);
-    bounds.extend(circle.getBounds());
-    layerBlue.eachLayer(l => bounds.extend(l.getLatLng()));
-    layerGreen.eachLayer(l => bounds.extend(l.getLatLng()));
-    map.fitBounds(bounds.pad(0.1));
-
+    // Legend
     const legend = L.control({ position: "bottomleft" });
     legend.onAdd = () => {
       const div = L.DomUtil.create("div", "legend");
       div.innerHTML = `
         <div style="font-weight:600; margin-bottom:4px;">สัญลักษณ์</div>
         <div class="row"><span class="dot red"></span> สาขา + รัศมี 80 กม.</div>
-        <div class="row"><span class="dot blue"></span> Leads ทั่วไป</div>
-        <div class="row"><span class="dot green"></span> Leads ที่ตรงกับ DBD</div>
-      `;
+        <div class="row"><span class="dot blue"></span> Leads ทั่วไป (Blue)</div>
+        <div class="row"><span class="dot green"></span> Leads ที่ตรงกับ DBD (Green)</div>`;
       return div;
     };
     legend.addTo(map);
-    L.control.scale({ metric: true, imperial: false }).addTo(map);
   </script>
 </body>
 </html>
