@@ -62,6 +62,43 @@
         background: linear-gradient(90deg, #4a90e2, #50c9ce);
       }
 
+  
+    .salesbox {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, #ffffff, #fffaf5);
+      padding: 16px 20px;
+      border-radius: 14px;
+      border: 1px solid #f0dcc3;
+      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+      font-family: "Segoe UI", sans-serif;
+      font-size: 15px;
+      min-width: 280px;
+    }
+    .salesbox .title {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #6b3f00;
+      border-bottom: 2px solid #ffb257;
+      padding-bottom: 6px;
+    }
+    .salesbox .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff4e5;
+      margin: 6px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+    .salesbox .value {
+      font-weight: 700;
+      font-size: 18px;
+      color: #7a4d00;
+    }
+    
   </style>
 </head>
 <body>
@@ -123,7 +160,20 @@
     });
 
     const map = L.map("map", { center: [branch.lat, branch.lng], zoom: 8 });
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    
+    // Closed Won / Sales summary (right side)
+    const salesCtrl = L.control({ position: "topright" });
+    salesCtrl.onAdd = () => {
+      const div = L.DomUtil.create("div", "salesbox");
+      div.innerHTML = `
+        <div class="title">💼 Closed Won Summary</div>
+        <div class="row"><span>จำนวนลูกค้า (ราย)</span><span class="value">0</span></div>
+        <div class="row"><span>ยอดขาย (ลิตร)</span><span class="value">0</span></div>
+      `;
+      return div;
+    };
+    salesCtrl.addTo(map);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors"
     }).addTo(map);
 
