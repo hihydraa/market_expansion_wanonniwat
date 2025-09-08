@@ -8,6 +8,7 @@
   <style>
     html, body { height: 100%; margin: 0; }
     #map { height: 100vh; width: 100vw; }
+
     .legend {
       position: absolute; bottom: 16px; left: 16px;
       background: white; padding: 14px 16px; border-radius: 10px;
@@ -59,7 +60,7 @@
     .filterbox button:hover { filter: brightness(0.98); }
     .filterbox .stat { margin-top: 8px; font-size: 13px; color: #1f5135; }
 
-    /* Sales summary (under filter) */
+    /* Sales summary boxes */
     .salesbox { 
       background: linear-gradient(135deg, #ffffff, #fffaf5);
       padding: 16px 20px;
@@ -75,21 +76,16 @@
     .salesbox .row { display: flex; justify-content: space-between; align-items: center; background: #fff4e5; margin: 6px 0; padding: 8px 12px; border-radius: 10px; }
     .salesbox .value { font-weight: 700; font-size: 18px; color: #7a4d00; }
 
-    /* Close Won Summary (fixed) */
-    .wonbox{
-      background: linear-gradient(135deg,#ffffff,#f3f7ff);
-      padding:16px 20px;
-      border-radius:14px;
-      border:1px solid #dbe4ff;
-      box-shadow:0 4px 16px rgba(0,0,0,.12);
-      font-family:"Segoe UI",sans-serif;
-      font-size:15px;
-      min-width:320px;
-      margin-top:10px;
+    .salesbox.cumu{
+      background: linear-gradient(135deg,#ffffff,#f4fff7);
+      border-color:#cfe9db;
     }
-    .wonbox .title{ font-weight:700; font-size:16px; margin-bottom:10px; color:#1e3a8a; border-bottom:2px solid #93c5fd; padding-bottom:6px; }
-    .wonbox .row{ display:flex; justify-content:space-between; align-items:center; background:#eef4ff; margin:6px 0; padding:8px 12px; border-radius:10px; }
-    .wonbox .value{ font-weight:700; font-size:18px; color:#1e3a8a; }
+    .salesbox.cumu .title{
+      color:#155e3b;border-bottom-color:#6fd3a7;
+    }
+    .salesbox.cumu .row{
+      background:#effcf5;
+    }
   </style>
 </head>
 <body>
@@ -239,7 +235,7 @@
       renderReach(filteredBlue, filteredGreen);
     }
 
-    // Filter control
+    // ===== Controls (Filter + Two summary boxes) =====
     const filterCtrl = L.control({ position: "topright" });
     filterCtrl.onAdd = () => {
       const div = L.DomUtil.create("div", "filterbox");
@@ -263,12 +259,12 @@
     };
     filterCtrl.addTo(map);
 
-    // Sales summary (dynamic)
+    // Box 1: ตามช่วงวันที่เลือก
     const salesCtrl = L.control({ position: "topright" });
     salesCtrl.onAdd = () => {
       const div = L.DomUtil.create("div", "salesbox");
       div.innerHTML = `
-        <div class="title">💼 สรุปจากการลงพื้นที่จริง</div>
+        <div class="title">💼 สรุปจากการลงพื้นที่จริง <i>(ตาม Filter Date)</i></div>
         <div class="row"><span>Actual Leads (ราย)</span><span class="value" id="cntCustomers">0</span></div>
         <div class="row"><span>Actual Market Size (ลิตร)</span><span class="value" id="sumLiters">0</span></div>`;
       L.DomEvent.disableClickPropagation(div);
@@ -276,31 +272,21 @@
     };
     salesCtrl.addTo(map);
 
-    function updateCounts(fBlue, fGreen) {
-      const all = [...fBlue, ...fGreen];
-      const customers = all.length;
-      const liters = all.reduce((acc, p) => acc + (p.DS||0) + (p.G91||0) + (p.G95||0), 0);
-      const fmt = (n) => n.toLocaleString();
-      document.getElementById('cntCustomers').textContent = fmt(customers);
-      document.getElementById('sumLiters').textContent = fmt(liters);
-    }
-
-    // NEW: Close Won Summary (fixed numbers)
-    const FIXED_WON_CUSTOMERS = 0;
-    const FIXED_WON_LITERS = 0;
-    const wonCtrl = L.control({ position: "topright" });
-    wonCtrl.onAdd = () => {
-      const div = L.DomUtil.create("div", "wonbox");
+    // Box 2: Cumulative (1 Jul → end)
+    const cumuCtrl = L.control({ position: "topright" });
+    cumuCtrl.onAdd = () => {
+      const div = L.DomUtil.create("div", "salesbox cumu");
       div.innerHTML = `
-        <div class="title">🏁 Close Won Summary</div>
-        <div class="row"><span>จำนวนลูกค้าที่ปิดการขาย (ราย)</span><span class="value">${FIXED_WON_CUSTOMERS}</span></div>
-        <div class="row"><span>ยอดขาย (ลิตร)</span><span class="value">${FIXED_WON_LITERS.toLocaleString()}</span></div>`;
+        <div class="title">📈 สรุปจากการลงพื้นที่จริง (Cumulative)</div>
+        <div class="row"><span>Leads สะสม (ราย)</span><span class="value" id="cumCntCustomers">0</span></div>
+        <div class="row"><span>ปริมาณลิตรสะสม</span><span class="value" id="cumSumLiters">0</span></div>
+        <div class="stat" id="cumuNote"></div>`;
       L.DomEvent.disableClickPropagation(div);
       return div;
     };
-    wonCtrl.addTo(map);
+    cumuCtrl.addTo(map);
 
-    // Date filtering
+    // ===== Helpers & summaries =====
     function parseYMD(s) { if (!s) return null; const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
     function within(dateStr, startStr, endStr) {
       if (!startStr && !endStr) return true;
@@ -309,28 +295,83 @@
       const e = endStr ? parseYMD(endStr) : null;
       if (s && d < s) return false; if (e && d > e) return false; return true;
     }
+    function fmt(n){ return n.toLocaleString(); }
+    function allData(){ return [...blueData, ...greenData]; }
+
+    function dataMinMax() {
+      const dates = allData().map(p => parseYMD(p.date)).filter(Boolean);
+      if (!dates.length) return {min:null,max:null};
+      return {min: new Date(Math.min(...dates)), max: new Date(Math.max(...dates))};
+    }
+
+    function updateCounts(fBlue, fGreen) {
+      const all = [...fBlue, ...fGreen];
+      const customers = all.length;
+      const liters = all.reduce((acc, p) => acc + (p.DS||0) + (p.G91||0) + (p.G95||0), 0);
+      document.getElementById('cntCustomers').textContent = fmt(customers);
+      document.getElementById('sumLiters').textContent = fmt(liters);
+    }
+
+    function updateCumulative(endStr, hasAnyFilter) {
+      const {max} = dataMinMax();
+      // ถ้าไม่เลือกวันที่เลย → รวมทั้งหมด
+      if (!hasAnyFilter) {
+        const customers = allData().length;
+        const liters = allData().reduce((acc,p)=>acc+(p.DS||0)+(p.G91||0)+(p.G95||0),0);
+        document.getElementById('cumCntCustomers').textContent = fmt(customers);
+        document.getElementById('cumSumLiters').textContent = fmt(liters);
+        document.getElementById('cumuNote').textContent = 'ช่วง: ทั้งหมด';
+        return;
+      }
+      // มีการเลือกช่วงใดช่วงหนึ่ง → 1 July ของปีเดียวกับ end → end
+      const end = endStr ? parseYMD(endStr) : max || new Date();
+      const start = new Date(end.getFullYear(), 6, 1); // 6 = July
+      const inRange = allData().filter(p => {
+        const d = parseYMD(p.date);
+        return d && d >= start && d <= end;
+      });
+      const customers = inRange.length;
+      const liters = inRange.reduce((acc,p)=>acc+(p.DS||0)+(p.G91||0)+(p.G95||0),0);
+      document.getElementById('cumCntCustomers').textContent = fmt(customers);
+      document.getElementById('cumSumLiters').textContent = fmt(liters);
+      const pad = (n)=>String(n).padStart(2,'0');
+      document.getElementById('cumuNote').textContent =
+        `ช่วง: 01/${pad(start.getMonth()+1)}/${start.getFullYear()} - ${pad(end.getDate())}/${pad(end.getMonth()+1)}/${end.getFullYear()}`;
+    }
+
     function applyFilter() {
       const start = document.getElementById('startDate').value;
       const end = document.getElementById('endDate').value;
       const fGreen = greenData.filter(p => within(p.date, start, end));
       const fBlue  = blueData.filter(p => within(p.date, start, end));
       renderAll(fBlue, fGreen);
+
       const stat = document.getElementById('filterStat');
       if (!start && !end) stat.textContent = 'แสดงผลทั้งหมด';
       else if (start && end) stat.textContent = `ช่วงวันที่ ${start} ถึง ${end}`;
       else if (start) stat.textContent = `ตั้งแต่วันที่ ${start}`;
       else stat.textContent = `ถึงวันที่ ${end}`;
+
+      updateCumulative(end, !!(start || end));
     }
-    function clearFilter() { document.getElementById('startDate').value=''; document.getElementById('endDate').value=''; applyFilter(); }
+    function clearFilter() {
+      document.getElementById('startDate').value='';
+      document.getElementById('endDate').value='';
+      applyFilter();
+    }
     function wireFilterEvents() {
       document.getElementById('applyBtn').addEventListener('click', applyFilter);
       document.getElementById('clearBtn').addEventListener('click', clearFilter);
-      ['startDate','endDate'].forEach(id => { document.getElementById(id).addEventListener('change', applyFilter); });
+      ['startDate','endDate'].forEach(id => {
+        document.getElementById(id).addEventListener('change', applyFilter);
+      });
     }
 
     // Initial render
     renderAll();
     wireFilterEvents();
+    // ค่าตั้งต้นของ Cumulative = รวมทั้งหมด
+    updateCumulative(null, false);
 
     // Legend
     const legend = L.control({ position: "bottomleft" });
