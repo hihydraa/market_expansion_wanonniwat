@@ -102,7 +102,6 @@
     };
 
     // ===== Market Size (ฐาน DBD ตามจังหวัด) =====
-    // ฐานเริ่มต้น (จากตาราง DBD Market Quantity)
     const MARKET_BASE = {
       "อุดรธานี": 151,
       "สกลนคร": 85,
@@ -172,32 +171,38 @@
     };
     reachCtrl.addTo(map);
 
+    // *** ฟังก์ชันคำนวณ Reach แบบใหม่ ***
     function renderReach(fBlue, fGreen) {
-      const byProvDBD = {};
-      const byProvNon = {};
+      const byProvBlue  = {};
+      const byProvGreen = {};
 
-      fGreen.forEach(p => {
-        const prov = p.province || "ไม่ทราบจังหวัด";
-        byProvDBD[prov] = (byProvDBD[prov] || 0) + 1;
-      });
+      // นับ leads ตามจังหวัด (แยก blue/green)
       fBlue.forEach(p => {
         const prov = p.province || "ไม่ทราบจังหวัด";
-        byProvNon[prov] = (byProvNon[prov] || 0) + 1;
+        byProvBlue[prov] = (byProvBlue[prov] || 0) + 1;
+      });
+      fGreen.forEach(p => {
+        const prov = p.province || "ไม่ทราบจังหวัด";
+        byProvGreen[prov] = (byProvGreen[prov] || 0) + 1;
       });
 
       const wrap = document.getElementById("reachRows");
+
+      // รวมรายชื่อจังหวัดทั้งหมดที่เกี่ยวข้อง
       const allProvs = new Set([
         ...Object.keys(MARKET_BASE),
-        ...Object.keys(byProvDBD),
-        ...Object.keys(byProvNon)
+        ...Object.keys(byProvBlue),
+        ...Object.keys(byProvGreen)
       ]);
 
       let html = "";
       allProvs.forEach(prov => {
-        const base   = MARKET_BASE[prov] || 0;
-        const extra  = byProvNon[prov] || 0;      // non-DBD → เพิ่มขนาดตลาด
-        const market = base + extra;
-        const actual = byProvDBD[prov] || 0;      // DBD = Actual Reach
+        const base   = MARKET_BASE[prov] || 0;          // DBD base เดิม
+        const blue   = byProvBlue[prov]  || 0;
+        const green  = byProvGreen[prov] || 0;
+        const leads  = blue + green;                    // Leads ทั้งหมด (blue+green)
+        const market = base + leads;                    // Market Size = base + leads
+        const actual = leads;                           // Actual = leads ทั้งหมด
         const pct    = market ? (actual / market) * 100 : 0;
 
         html += `
