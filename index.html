@@ -101,45 +101,22 @@
       radius_m: 80000
     };
 
-    // ===== Market Size (กำหนดครั้งเดียว) =====
-    const MARKET_SIZE = {
-      "สกลนคร": 102,
-      "บึงกาฬ": 40
+    // ===== Market Size (ฐาน DBD ตามจังหวัด) =====
+    // ฐานเริ่มต้น (จากตาราง DBD Market Quantity)
+    const MARKET_BASE = {
+      "อุดรธานี": 151,
+      "สกลนคร": 85,
+      "บึงกาฬ": 33,
+      "นครพนม": 63
     };
 
-    // ===== Data =====
-    const greenData = [
-      {"name":"ปั๊มอุทัยบริการ","date":"2025-07-16","DS":9000,"G91":2500,"G95":2500,"supplier":"PT,ไทยรุ่งเรือง","lat":17.765329676058276,"lng":103.81967818209542,"amphoe":"คำตากล้า","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
-      {"name":"ปั้มหนองคายไทยรุ่งเรือง (หจก.หนองคายไทยรุ่งเรือง)","date":"2025-07-16","DS":0,"G91":0,"G95":0,"supplier":"ปั้มหนองคายไทยรุ่งเรือง","lat":18.020289696607946,"lng":103.70718204106291,"amphoe":"พรเจริญ","province":"บึงกาฬ","resource":"มีเทลเลอร์ 3 หาง 1 หัวลาก / 10 ล้อ 3 / มิเตอร์ 1","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปั้มเทพปราณี (หจก.เทพปราณี 1969)","date":"2025-07-16","DS":8000,"G91":0,"G95":4000,"supplier":"สุขสันต์","lat":17.943663515847685,"lng":104.0312431532645,"amphoe":"บึงโขงหลง","province":"บึงกาฬ","resource":"รับกับเทลเลอร์","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปตท.ดงมะไฟ (หจก.เทวินปิโตรเลียม)","date":"2025-07-17","DS":0,"G91":0,"G95":0,"supplier":"ปตท ดงมะไฟ","lat":17.277844877801485,"lng":103.9918417244141,"amphoe":"เมืองสกลนคร","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"}
-    ];
-    const blueData = [
-      {"name":"ปั๊มพิชัยบริการ","date":"2025-07-15","DS":6000,"G91":0,"G95":200,"supplier":"ไทยรุ่งเรืองบึงกาฬ","lat":17.86715478819837,"lng":103.59521899559262,"amphoe":"บ้านม่วง","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"ถัง 200 ลิตร 2 ถัง","BU":"ST"},
-      {"name":"ปั๊มใจดี บ่อแก้วบริการ","date":"2025-07-15","DS":18000,"G91":4000,"G95":4000,"supplier":"ศรีพลัง","lat":17.866426366070954,"lng":103.59515145326274,"amphoe":"บ้านม่วง","province":"สกลนคร","resource":"เทลเลอร์ส่ง","sender":"พี่ต้น","note":"","BU":"ST"},
-      {"name":"ปั๊มนันมินิมาร์ท","date":"2025-07-15","DS":3000,"G91":0,"G95":500,"supplier":"ไทยรุ่งเรือง","lat":17.925056103979696,"lng":103.66866826675891,"amphoe":"บ้านม่วง","province":"สกลนคร","resource":"","sender":"พี่ต้น","note":"ซื้อเงินสด / ราคาเราสู้ได้ DS ซื้อลิตรละ 32.00","BU":"ST"},
-      {"name":"ปั้มสมพรการค้า รับมิเตอร์","date":"2025-07-15","DS":500,"G91":0,"G95":500,"supplier":"ไทยรุ่งเรือง","lat":17.957674794286323,"lng":103.68048112442985,"amphoe":"พรเจริญ","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปั๊มชุมชนสาธิตการตลาด บ้านพอกใหญ่","date":"2025-07-15","DS":4000,"G91":0,"G95":2000,"supplier":"","lat":17.858803949327505,"lng":103.71931080908715,"amphoe":"คำตากล้า","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
-      {"name":"ปั้มไพศาลบริการ อ.เมืองบึงกาฬ","date":"2025-07-16","DS":9000,"G91":5000,"G95":5000,"supplier":"หนองคายไทยรุ่งเรือง","lat":18.275102836751245,"lng":103.8533200109426,"amphoe":"เมืองบึงกาฬ","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปั้มสิริวัฒน์","date":"2025-07-16","DS":3000,"G91":0,"G95":500,"supplier":"ช.วิบูลย์(พรเจริญ)","lat":18.179102382652673,"lng":103.89704795327019,"amphoe":"เซกา","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปั้มทรัพย์มั่นคง99","date":"2025-07-16","DS":0,"G91":0,"G95":0,"supplier":"หนองคายไทยรุ่งเรือง","lat":18.105442849515683,"lng":103.84663706676317,"amphoe":"ศรีวิไล","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"รับน้ำมันกับหนองคายรุ่งเรืองทั้ง 3 สาขา","BU":"KN"},
-      {"name":"ปั๊มป่านตะวัน","date":"2025-07-16","DS":4000,"G91":0,"G95":500,"supplier":"รีพลัง","lat":17.765919023891154,"lng":103.81766172442532,"amphoe":"คำตากล้า","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
-      {"name":"ปั้มบ้านนาแสง","date":"2025-07-16","DS":0,"G91":0,"G95":0,"supplier":"วิบูลย์(พรเจริญ)","lat":18.116237525670297,"lng":103.86627256676341,"amphoe":"ศรีวิไล","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปั๊มวิเชียร","date":"2025-07-16","DS":1000,"G91":0,"G95":500,"supplier":"ช.พิบูล","lat":17.762843895849546,"lng":103.83351872442522,"amphoe":"คำตากล้า","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
-      {"name":"ปั้มแม่เต็มจิต","date":"2025-07-16","DS":5000,"G91":0,"G95":500,"supplier":"ช.วิบูลย์(พรเจริญ)","lat":18.08340236089418,"lng":103.95153636676265,"amphoe":"เซกา","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"รับน้ำมันกับหนองคายรุ่งเรืองด้วย","BU":"KN"},
-      {"name":"ปั๊มหว้าใหญ่","date":"2025-07-16","DS":500,"G91":0,"G95":500,"supplier":"นาทีพาณิช","lat":17.628680483437247,"lng":103.95553545325721,"amphoe":"อากาศอำนวย","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
-      {"name":"ปั๊มขายดีบริการ","date":"2025-07-16","DS":4000,"G91":0,"G95":450,"supplier":"ปตท.","lat":17.555747336910922,"lng":104.0201282667504,"amphoe":"อากาศอำนวย","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
-      {"name":"ปั้มบุญเจริญ บึงโขงหลง","date":"2025-07-16","DS":0,"G91":0,"G95":0,"supplier":"นาทีวานร","lat":17.990175260456073,"lng":104.08603603792535,"amphoe":"บึงโขงหลง","province":"บึงกาฬ","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปั้มจงราชาทรัพย์","date":"2025-07-17","DS":10000,"G91":0,"G95":5000,"supplier":"ลิตรนภา","lat":17.390122237074333,"lng":104.38102149558154,"amphoe":"กุสุมาลย์","province":"สกลนคร","resource":"","sender":"พี่โก้","note":"ปั้มใหม่เปิดยังไม่ถึงปี สู้ที่ราคาและเวลาเสริฟ","BU":"KN"},
-      {"name":"ปั๊ม ซี เค ออยล์ 1992","date":"2025-07-17","DS":10000,"G91":6000,"G95":10000,"supplier":"คอสโม่","lat":17.224286946572104,"lng":104.1068117244128,"amphoe":"เมืองสกลนคร","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
-      {"name":"ปั้มพ่อพินิจ","date":"2025-07-17","DS":10000,"G91":0,"G95":5000,"supplier":"PTประมวลบริการ","lat":17.38631393402591,"lng":103.78297745140618,"amphoe":"พังโคน","province":"สกลนคร","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปั๊มอี๊ดบริการ พรรณานิคม","date":"2025-07-17","DS":1000,"G91":0,"G95":500,"supplier":"PTประมวลบริการสว่างแดนดิน","lat":17.363891001952435,"lng":103.78976562441613,"amphoe":"พรรณานิคม","province":"สกลนคร","resource":"","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปั๊มอนันต์","date":"2025-07-17","DS":1400,"G91":500,"G95":0,"supplier":"ปตท ดงมะไฟ","lat":17.266569663639924,"lng":103.97206018208398,"amphoe":"พรรณานิคม","province":"สกลนคร","resource":"","sender":"พี่จุ่น","note":"","BU":"ST"},
-      {"name":"ปั้มTD ธนสินดี วาริชภูมิ","date":"2025-07-17","DS":5000,"G91":0,"G95":500,"supplier":"สุขสันต์","lat":17.24446786834928,"lng":103.65504311091858,"amphoe":"วาริชภูมิ","province":"สกลนคร","resource":"","sender":"พี่โก้","note":"สู้ที่ราคา ไม่ยึดติดครับ","BU":"KN"},
-      {"name":"ปั้มใจดีออยล์","date":"2025-07-17","DS":2000,"G91":0,"G95":500,"supplier":"","lat":17.26672434484204,"lng":103.63399956674371,"amphoe":"วาริชภูมิ","province":"สกลนคร","resource":"มีรถมิเตอร์6 ล้อ1 คัน","sender":"พี่โก้","note":"กรอกปั้มใหญ่ วิ่งขายสายลูกค้าประจำ","BU":"KN"},
-      {"name":"ปั้มพ่อชา","date":"2025-07-17","DS":0,"G91":0,"G95":0,"supplier":"","lat":17.271375085001825,"lng":103.63325603790868,"amphoe":"วาริชภูมิ","province":"สกลนคร","resource":"มีรถมิเตอร์6 ล้อ1 คัน","sender":"พี่โก้","note":"","BU":"KN"},
-      {"name":"ปั้มธนัชโชติ","date":"2025-07-17","DS":0,"G91":0,"G95":0,"supplier":"","lat":17.36068156508588,"lng":103.8363719955808,"amphoe":"พรรณานิคม","province":"สกลนคร","resource":"มีรถมิเตอร์6 ล้อ1 คัน","sender":"พี่โก้","note":"","BU":"KN"}
-    ];
+    // ===== Google Sheet config =====
+    const SHEET_ID   = "1UZxR7z7GFmqzYHkkbfeH6pF17OgkucKvCqYjbRf4NJw";
+    const SHEET_NAME = "WNN";
+
+    // ข้อมูล leads (จะถูกเติมจาก Google Sheet)
+    let blueData  = []; // ไม่ใช่ DBD
+    let greenData = []; // อยู่ใน DBD
 
     // ===== Icons =====
     const redIcon = L.icon({ iconUrl: "https://maps.google.com/mapfiles/ms/icons/red-dot.png", iconSize: [32,32], iconAnchor: [16,32], popupAnchor: [0,-28] });
@@ -183,7 +160,7 @@
       });
     }
 
-    // Reach box
+    // ===== Reach box =====
     const reachCtrl = L.control({ position: "topleft" });
     reachCtrl.onAdd = () => {
       const div = L.DomUtil.create("div", "reach");
@@ -196,26 +173,45 @@
     reachCtrl.addTo(map);
 
     function renderReach(fBlue, fGreen) {
-      const all = [...fBlue, ...fGreen];
-      const byProvince = {};
-      all.forEach(p => {
+      const byProvDBD = {};
+      const byProvNon = {};
+
+      fGreen.forEach(p => {
         const prov = p.province || "ไม่ทราบจังหวัด";
-        byProvince[prov] = (byProvince[prov] || 0) + 1;
+        byProvDBD[prov] = (byProvDBD[prov] || 0) + 1;
       });
+      fBlue.forEach(p => {
+        const prov = p.province || "ไม่ทราบจังหวัด";
+        byProvNon[prov] = (byProvNon[prov] || 0) + 1;
+      });
+
       const wrap = document.getElementById("reachRows");
+      const allProvs = new Set([
+        ...Object.keys(MARKET_BASE),
+        ...Object.keys(byProvDBD),
+        ...Object.keys(byProvNon)
+      ]);
+
       let html = "";
-      Object.keys(MARKET_SIZE).forEach(prov => {
-        const actual = byProvince[prov] || 0;
-        const market = MARKET_SIZE[prov];
-        const pct = market ? (actual / market) * 100 : 0;
-        html += `<div class="row"><div class="label"><span>${prov}</span><span>${actual}/${market} (${pct.toFixed(2)}%)</span></div><div class="bar"><span style="width:${Math.min(pct,100)}%"></span></div></div>`;
+      allProvs.forEach(prov => {
+        const base   = MARKET_BASE[prov] || 0;
+        const extra  = byProvNon[prov] || 0;      // non-DBD → เพิ่มขนาดตลาด
+        const market = base + extra;
+        const actual = byProvDBD[prov] || 0;      // DBD = Actual Reach
+        const pct    = market ? (actual / market) * 100 : 0;
+
+        html += `
+          <div class="row">
+            <div class="label">
+              <span>${prov}</span>
+              <span>${actual}/${market} (${pct.toFixed(2)}%)</span>
+            </div>
+            <div class="bar">
+              <span style="width:${Math.min(pct,100)}%"></span>
+            </div>
+          </div>`;
       });
-      Object.keys(byProvince).forEach(prov => {
-        if (!(prov in MARKET_SIZE)) {
-          const actual = byProvince[prov];
-          html += `<div class="row"><div class="label"><span>${prov}</span><span>${actual}/-</span></div><div class="bar"><span style="width:0%"></span></div></div>`;
-        }
-      });
+
       wrap.innerHTML = html || `<div style="opacity:.8">ไม่มีข้อมูลในช่วงวันที่ที่เลือก</div>`;
     }
 
@@ -314,7 +310,6 @@
 
     function updateCumulative(endStr, hasAnyFilter) {
       const {max} = dataMinMax();
-      // ถ้าไม่เลือกวันที่เลย → รวมทั้งหมด
       if (!hasAnyFilter) {
         const customers = allData().length;
         const liters = allData().reduce((acc,p)=>acc+(p.DS||0)+(p.G91||0)+(p.G95||0),0);
@@ -323,7 +318,6 @@
         document.getElementById('cumuNote').textContent = 'ช่วง: ทั้งหมด';
         return;
       }
-      // มีการเลือกช่วงใดช่วงหนึ่ง → 1 July ของปีเดียวกับ end → end
       const end = endStr ? parseYMD(endStr) : max || new Date();
       const start = new Date(end.getFullYear(), 6, 1); // 6 = July
       const inRange = allData().filter(p => {
@@ -340,6 +334,8 @@
     }
 
     function applyFilter() {
+      if (!blueData.length && !greenData.length) return; // ยังโหลดข้อมูลไม่เสร็จ
+
       const start = document.getElementById('startDate').value;
       const end = document.getElementById('endDate').value;
       const fGreen = greenData.filter(p => within(p.date, start, end));
@@ -367,11 +363,94 @@
       });
     }
 
-    // Initial render
-    renderAll();
+    // ===== ดึงข้อมูลจาก Google Sheets =====
+    function parseSheetDateCell(cell) {
+      if (!cell) return null;
+      if (cell.f) {
+        const d = new Date(cell.f);
+        if (!isNaN(d)) return d;
+      }
+      if (typeof cell.v === "string") {
+        if (/Date\(/.test(cell.v)) {
+          const m = cell.v.match(/Date\((\d+),(\d+),(\d+)\)/);
+          if (m) return new Date(Number(m[1]), Number(m[2]), Number(m[3]));
+        }
+        const d = new Date(cell.v);
+        if (!isNaN(d)) return d;
+      }
+      if (typeof cell.v === "number") {
+        const base = new Date(1899,11,30);
+        return new Date(base.getTime() + cell.v * 86400000);
+      }
+      return null;
+    }
+
+    function toYMD(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth()+1).padStart(2,'0');
+      const d = String(dateObj.getDate()).padStart(2,'0');
+      return `${y}-${m}-${d}`;
+    }
+
+    async function loadSheetData() {
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&headers=1&tqx=out:json`;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const text = await res.text();
+        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}')+1));
+        const rows = json.table.rows || [];
+
+        blueData  = [];
+        greenData = [];
+
+        rows.forEach(r => {
+          const c = r.c;
+          if (!c) return;
+
+          const name = c[2]?.v;
+          if (!name) return;
+
+          const dateCell = c[1] || c[3];
+          const dObj = parseSheetDateCell(dateCell);
+          if (!dObj) return;
+          const date = toYMD(dObj);
+
+          const DS  = Number(c[4]?.v || 0);
+          const G91 = Number(c[5]?.v || 0);
+          const G95 = Number(c[6]?.v || 0);
+          const supplier = c[7]?.v || "";
+          const latlngStr = c[8]?.v || "";
+          const [latStr, lngStr] = latlngStr.split(",").map(s => s && s.trim());
+          const lat = parseFloat(latStr);
+          const lng = parseFloat(lngStr);
+          if (!isFinite(lat) || !isFinite(lng)) return;
+
+          const amphoe   = c[9]?.v || "";
+          const province = c[10]?.v || "";
+          const resource = c[11]?.v || "";
+          const sender   = c[12]?.v || "";
+          const note     = c[13]?.v || "";
+          const BU       = c[14]?.v || "";
+          const isDBD    = !!(c[15]?.v);
+
+          const obj = {name,date,DS,G91,G95,supplier,lat,lng,amphoe,province,resource,sender,note,BU,isDBD};
+
+          if (isDBD) greenData.push(obj);   // อยู่ใน DBD
+          else       blueData.push(obj);    // นอก DBD
+        });
+
+        renderAll(blueData, greenData);
+        updateCumulative(null, false);
+      } catch (err) {
+        console.error("โหลดข้อมูลจาก Google Sheets ไม่สำเร็จ", err);
+        alert("โหลดข้อมูลจาก Google Sheets ไม่ได้ กรุณาตรวจสอบการแชร์ไฟล์ / ชื่อชีต");
+      }
+    }
+
+    // Initial
     wireFilterEvents();
-    // ค่าตั้งต้นของ Cumulative = รวมทั้งหมด
-    updateCumulative(null, false);
+    loadSheetData();
 
     // Legend
     const legend = L.control({ position: "bottomleft" });
@@ -380,8 +459,8 @@
       div.innerHTML = `
         <div style="font-weight:600; margin-bottom:4px;">สัญลักษณ์</div>
         <div class="row"><span class="dot red"></span> สาขา + รัศมี 80 กม.</div>
-        <div class="row"><span class="dot blue"></span> Leads ทั่วไป (Blue)</div>
-        <div class="row"><span class="dot green"></span> Leads ที่ตรงกับ DBD (Green)</div>`;
+        <div class="row"><span class="dot blue"></span> Leads ทั่วไป (นอก DBD)</div>
+        <div class="row"><span class="dot green"></span> Leads ที่อยู่ใน DBD</div>`;
       return div;
     };
     legend.addTo(map);
